@@ -8,6 +8,7 @@ const Handlebars = require('handlebars');
 const mime = require('./mime');
 const compress = require('./compress');
 const range = require('./range');
+const isCached = require('./cache');
 
 
 const source = fs.readFileSync(path.join(__dirname, '../template/dir.html'));
@@ -19,6 +20,12 @@ module.exports = async (req, res, filePath, config) => {
 		if(stats.isFile()){
 			const contentType = mime(filePath);
 			res.setHeader('Content-Type', contentType);
+
+			if(isCached(stats, req, res)){
+				res.statusCode = 304;
+				res.end();
+				return ;
+			}
 
 			let rs;
 			const { code, start, end } = range(stats.size, req, res);
