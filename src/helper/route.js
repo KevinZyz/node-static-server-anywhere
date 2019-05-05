@@ -7,6 +7,7 @@ const Handlebars = require('handlebars');
 
 const mime = require('./mime');
 const compress = require('./compress');
+const range = require('./range');
 
 
 const source = fs.readFileSync(path.join(__dirname, '../template/dir.html'));
@@ -17,9 +18,17 @@ module.exports = async (req, res, filePath, config) => {
 		const stats = await stat(filePath);
 		if(stats.isFile()){
 			const contentType = mime(filePath);
-			res.setStatusCode = 200;
 			res.setHeader('Content-Type', contentType);
-			let rs = fs.createReadStream(filePath);
+
+			let rs;
+			const { code, start, end } = range(stats.size, req, res);
+			res.statusCode = code;
+			if(code === 200){
+				rs = fs.createReadStream(filePath);
+			}else{
+				rs = fs.createReadStream(filePath, {start, end});
+			}
+
 			if(filePath.match(config.compress)){
 				rs = compress(rs, req, res);
 			}
@@ -34,7 +43,7 @@ module.exports = async (req, res, filePath, config) => {
 			res.end(template(data));
 		}
 	}catch(ex){
-		res.setStatusCode = 404;
+		res.statusCode = 404;
 		res.setHeader('Content-Type', 'text/plain');
 		res.end(`${filePath} is not a directory or file`);
 	}
