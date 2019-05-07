@@ -3,16 +3,16 @@
 
 ## 安装
 ```
-npm i -g static-anywhere
+npm i -g node-static-server-anywhere
 ```
 
 ## 使用方法
 ```
-static-anywhere # 把当前文件夹作为静态资源服务器根目录
+anywhere # 把当前文件夹作为静态资源服务器根目录
 
-static-anywhere -p 8080 # 设置端口号为8080
+anywhere -p 8080 # 设置端口号为8080
 
-static-anywhere -h localhost # 设置 host 为 localhost
+anywhere -h localhost # 设置 host 为 localhost
 
-static-anywhere -d /usr # 设置根目录为 /usr
+anywhere -d /usr # 设置根目录为 /usr
 ```
