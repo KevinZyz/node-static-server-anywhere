@@ -1,11 +1,15 @@
 {
   "name": "node-static-server-anywhere",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "使用 Nodejs 搭建一个静态资源文件服务器",
+  "bin": {
+    "static-anywhere": "bin/static_anywhere"
+  },
   "main": "build/index.js",
   "dependencies": {
     "chalk": "^2.4.2",
-    "handlebars": "^4.1.2"
+    "handlebars": "^4.1.2",
+    "yargs": "^13.2.2"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
